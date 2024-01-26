@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+// import nisha from 'assets/wombat.jpeg'
 
 export class Game extends Scene
 {
@@ -9,11 +10,15 @@ export class Game extends Scene
 
     create ()
     {
-        this.cameras.main.setBackgroundColor(0x00ff00);
 
-        this.add.image(512, 384, 'background').setAlpha(0.5);
+        this.add.image(512, 384, 'level0_background')
 
-        this.add.text(512, 384, 'Make something fun!\nand share it with us:\nsupport@phaser.io', {
+
+        this.misha = this.physics.add.sprite(500, 500, 'misha');
+        this.misha.setCollideWorldBounds(true);
+        this.misha.setBounce(0.2);
+
+        this.add.text(512, 384, 'Meet misha', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'

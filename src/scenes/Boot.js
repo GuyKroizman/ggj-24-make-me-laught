@@ -14,6 +14,7 @@ export class Boot extends Scene
 
         this.load.image('level0_background', 'assets/level0_background.jpeg');
         this.load.image('platform', 'assets/platform.png');
+        this.load.image('invisible_platform', 'assets/invisibleBottom.png');
         this.load.spritesheet('misha', 'assets/wombat.png', { frameWidth: 128, frameHeight: 90 });
     }
 

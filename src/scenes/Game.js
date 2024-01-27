@@ -1,7 +1,5 @@
 import {Scene} from 'phaser';
 
-// import nisha from 'assets/wombat.jpeg'
-
 export class Game extends Scene {
     constructor() {
         super('Game');
@@ -13,6 +11,7 @@ export class Game extends Scene {
 
         const platforms = this.physics.add.staticGroup();
         platforms.create(500, 600, 'platform')
+        platforms.create(800, 600, 'platform')
         platforms.create(200, 400, 'platform').setScale(1).refreshBody();
 
         this.misha = this.physics.add.sprite(500, 500, 'misha');
@@ -22,6 +21,10 @@ export class Game extends Scene {
 
         this.physics.add.collider(this.misha, platforms);
 
+        const bottom = this.physics.add.staticGroup();
+        bottom.create(500, 810, 'invisible_platform').setScale(9).refreshBody();
+        const invisibleBottom = this.physics.add.collider(this.misha, bottom);
+        invisibleBottom.visibe = false;
 
         this.anims.create({
             key: 'left',
@@ -50,9 +53,6 @@ export class Game extends Scene {
     }
 
     update() {
-        if(this.misha.y > 650) {
-            this.misha.setVelocityY(-200);
-        }
         const cursor = this.input.keyboard.createCursorKeys();
         if (cursor.left.isDown) {
             this.misha.setVelocityX(-160);
@@ -65,7 +65,7 @@ export class Game extends Scene {
         }
 
         if (cursor.up.isDown && this.misha.body.touching.down) {
-            this.misha.setVelocityY(-100);
+            this.misha.setVelocityY(-200);
         }
     }
 }

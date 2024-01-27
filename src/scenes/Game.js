@@ -1,11 +1,16 @@
 import {Scene} from 'phaser';
+import Phaser from "phaser";
 
 export class Game extends Scene {
     constructor() {
         super('Game');
+        this.poopGroup = null;
+        this.isFacingRight = false;
     }
 
     create() {
+
+        this.poopGroup = new PoopGroup(this);
 
         this.add.image(512, 384, 'level0_background')
 
@@ -52,20 +57,67 @@ export class Game extends Scene {
         });
     }
 
-    update() {
+    update(time, delta) {
         const cursor = this.input.keyboard.createCursorKeys();
         if (cursor.left.isDown) {
+            this.isFacingRight = false;
             this.misha.setVelocityX(-160);
             this.misha.anims.play('left', true);
         } else if (cursor.right.isDown) {
+            this.isFacingRight = true;
             this.misha.setVelocityX(160);
             this.misha.anims.play('right', true);
         } else {
             this.misha.setVelocityX(0);
         }
 
+        if(cursor.down.isDown) {
+            this.poopGroup.shootPoop(this.isFacingRight, this.misha.x, this.misha.y);
+        }
+
         if (cursor.up.isDown && this.misha.body.touching.down) {
             this.misha.setVelocityY(-200);
         }
+    }
+}
+
+export class PoopGroup extends Phaser.Physics.Arcade.Group {
+    constructor(scene) {
+        super(scene.physics.world, scene);
+
+        this.createMultiple({
+            classType: PoopSprite,
+            frameQuantity: 30,
+            active: false,
+            visible: false,
+            key: "poop_bullet"
+        })
+    }
+
+    shootPoop(isFacingRight, x, y) {
+        const poop = this.getFirstDead(true);
+        if (poop) {
+            poop.shoot(isFacingRight, x, y);
+        }
+    }
+
+}
+
+export class PoopSprite extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y) {
+        super(scene, x, y, "poop_bullet");
+    }
+
+    shoot(isFacingRight, x, y) {
+        this.body.setSize(24,24)
+        this.body.reset(isFacingRight? x - 40: x + 40, y);
+        this.setActive(true);
+        this.setVisible(true);
+        this.setVelocityY(-60);
+        this.setVelocityX(isFacingRight ? -250 : 250);
+    }
+
+    preUpdate(time, delta) {
+        super.preUpdate(time, delta);
     }
 }

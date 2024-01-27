@@ -16,6 +16,7 @@ export class Game extends Scene {
         platforms.create(200, 400, 'platform').setScale(1).refreshBody();
 
         this.misha = this.physics.add.sprite(500, 500, 'misha');
+        this.misha.setScale(0.5);
         this.misha.setCollideWorldBounds(true);
         this.misha.setBounce(0.2);
 
@@ -50,7 +51,7 @@ export class Game extends Scene {
 
     update() {
         if(this.misha.y > 650) {
-            this.misha.setVelocityY(-330);
+            this.misha.setVelocityY(-200);
         }
         const cursor = this.input.keyboard.createCursorKeys();
         if (cursor.left.isDown) {
@@ -64,7 +65,7 @@ export class Game extends Scene {
         }
 
         if (cursor.up.isDown && this.misha.body.touching.down) {
-            this.misha.setVelocityY(-330);
+            this.misha.setVelocityY(-100);
         }
     }
 }

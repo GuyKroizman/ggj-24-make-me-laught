@@ -111,6 +111,7 @@ export class PoopGroup extends Phaser.Physics.Arcade.Group {
     shootPoop(isFacingRight, x, y) {
         const poop = this.getFirstDead(true);
         if (poop) {
+            poop.setScale(0.5)
             poop.shoot(isFacingRight, x, y);
         }
     }
@@ -123,7 +124,6 @@ export class PoopSprite extends Phaser.Physics.Arcade.Sprite {
     }
 
     shoot(isFacingRight, x, y) {
-        this.body.setSize(18,18)
         this.body.reset(isFacingRight? x - 40: x + 40, y);
         this.setActive(true);
         this.setVisible(true);

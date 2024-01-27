@@ -6,6 +6,10 @@ export class Game extends Scene {
         super('Game');
         this.poopGroup = null;
         this.isFacingRight = false;
+
+        this.shootingCooldown = false;
+        this.shootingTimer = 0;
+        this.SHOOTING_COOLDOWN_DURATION = 500;
     }
 
     create() {
@@ -71,8 +75,18 @@ export class Game extends Scene {
             this.misha.setVelocityX(0);
         }
 
-        if(cursor.down.isDown) {
+        if (this.shootingCooldown) {
+            this.shootingTimer += delta;
+
+            if (this.shootingTimer >= this.SHOOTING_COOLDOWN_DURATION) {
+                this.shootingCooldown = false;
+                this.shootingTimer = 0;
+            }
+        }
+
+        if(cursor.down.isDown && !this.shootingCooldown) {
             this.poopGroup.shootPoop(this.isFacingRight, this.misha.x, this.misha.y);
+            this.shootingCooldown = true;
         }
 
         if (cursor.up.isDown && this.misha.body.touching.down) {
@@ -109,12 +123,13 @@ export class PoopSprite extends Phaser.Physics.Arcade.Sprite {
     }
 
     shoot(isFacingRight, x, y) {
-        this.body.setSize(24,24)
+        this.body.setSize(18,18)
         this.body.reset(isFacingRight? x - 40: x + 40, y);
         this.setActive(true);
         this.setVisible(true);
         this.setVelocityY(-60);
-        this.setVelocityX(isFacingRight ? -250 : 250);
+        this.setVelocityX(isFacingRight ? -300 : 300);
+        this.setDepth(10);
     }
 
     preUpdate(time, delta) {

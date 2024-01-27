@@ -18,6 +18,8 @@ export class Boot extends Scene
         this.load.spritesheet('misha', 'assets/wombat.png', { frameWidth: 128, frameHeight: 90 });
 
         this.load.image('poop_bullet', 'assets/poop_bullet.png');
+
+        this.load.audio('music_1', 'assets/music_1.mp3');
     }
 
     create ()

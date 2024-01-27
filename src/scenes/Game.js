@@ -10,9 +10,15 @@ export class Game extends Scene {
         this.shootingCooldown = false;
         this.shootingTimer = 0;
         this.SHOOTING_COOLDOWN_DURATION = 500;
+
+
+        this.backgroundMusic = null;
     }
 
     create() {
+        this.backgroundMusic = this.sound.add('music_1');
+
+        this.backgroundMusic.play({loop: true});
 
         this.poopGroup = new PoopGroup(this);
 
@@ -54,11 +60,9 @@ export class Game extends Scene {
             align: 'center'
         }).setOrigin(0.5);
 
-        this.input.once('pointerdown', () => {
-
-            this.scene.start('GameOver');
-
-        });
+        // this.input.once('pointerdown', () => {
+        //     this.scene.start('GameOver');
+        // });
     }
 
     update(time, delta) {
@@ -84,7 +88,7 @@ export class Game extends Scene {
             }
         }
 
-        if(cursor.down.isDown && !this.shootingCooldown) {
+        if (cursor.down.isDown && !this.shootingCooldown) {
             this.poopGroup.shootPoop(this.isFacingRight, this.misha.x, this.misha.y);
             this.shootingCooldown = true;
         }
@@ -93,6 +97,7 @@ export class Game extends Scene {
             this.misha.setVelocityY(-200);
         }
     }
+
 }
 
 export class PoopGroup extends Phaser.Physics.Arcade.Group {
@@ -115,7 +120,6 @@ export class PoopGroup extends Phaser.Physics.Arcade.Group {
             poop.shoot(isFacingRight, x, y);
         }
     }
-
 }
 
 export class PoopSprite extends Phaser.Physics.Arcade.Sprite {
@@ -124,7 +128,7 @@ export class PoopSprite extends Phaser.Physics.Arcade.Sprite {
     }
 
     shoot(isFacingRight, x, y) {
-        this.body.reset(isFacingRight? x - 40: x + 40, y);
+        this.body.reset(isFacingRight ? x - 40 : x + 40, y);
         this.setActive(true);
         this.setVisible(true);
         this.setVelocityY(-60);
